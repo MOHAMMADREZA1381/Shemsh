@@ -1,0 +1,6 @@
+@Shemsh_HostAddress = http://localhost:5024
+
+GET {{Shemsh_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
