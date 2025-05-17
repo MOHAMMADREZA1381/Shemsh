@@ -12,6 +12,7 @@ namespace Shemsh.Controllers
     public class RequestsController : ControllerBase
     {
         private readonly ILeaveRequestService _leaveRequest;
+
         public RequestsController(ILeaveRequestService leaveRequest)
         {
             _leaveRequest = leaveRequest;
@@ -40,14 +41,20 @@ namespace Shemsh.Controllers
         }
 
         [HttpPut("status")]
-        public async Task<IActionResult> UpdateRequestStatus([FromForm]UpdateRequestCommand command)
+        public async Task<IActionResult> UpdateRequestStatus([FromForm] UpdateRequestCommand command)
         {
             if (ModelState.IsValid)
             {
-                await _leaveRequest.UpdateLeaveRequestAsync(command);
-                return Ok();
+                bool IsAnyRequest = await _leaveRequest.IsAnyLeaveRequest(command.RequestId);
+                if (IsAnyRequest == true)
+                {
+                    await _leaveRequest.UpdateLeaveRequestAsync(command);
+                    return Ok("Success");
+                }
+
+                return NotFound("Request Not Found");
             }
-            return Ok();
+            return BadRequest();
         }
 
     }

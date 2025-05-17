@@ -22,7 +22,7 @@ public class LeaveRequestService : ILeaveRequestService
     public async Task<bool> AddNewRequestAsync(NewRequestCommand command)
     {
         var IsReplacementBussy =
-            await _leaveRequestRepository.IsAnyLeaveRequestAsync(command.ReplacementEmployeeId, command.FromDate,
+            await _leaveRequestRepository.IsAnyActiveLeaveRequestAsync(command.ReplacementEmployeeId, command.FromDate,
                 command.ToDate);
 
         if (IsReplacementBussy == false)
@@ -70,5 +70,10 @@ public class LeaveRequestService : ILeaveRequestService
         Request.UpdateStatus(command.Status); 
         await _leaveRequestRepository.UpdateLeaveRequest(Request);
         await _leaveRequestRepository.SaveChangesAsync();
+    }
+
+    public async Task<bool> IsAnyLeaveRequest(Guid guid)
+    {
+        return await _leaveRequestRepository.IsAnyLeaveRequest(guid);
     }
 }

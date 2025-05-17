@@ -26,9 +26,9 @@ namespace Shemsh.Controllers
             if (ModelState.IsValid)
             {
                 await _employeeService.AddEmployee(command);
-                return Ok();
+                return Ok("Success");
             }
-            return Ok();
+            return BadRequest();
         }
 
         [HttpGet("{UserId}")]

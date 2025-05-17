@@ -8,4 +8,5 @@ public interface ILeaveRequestService
     Task<bool> AddNewRequestAsync(NewRequestCommand command);
     Task<ICollection<AllLeaveRequestDTO>> GetAllLeaveRequestAsync();
     Task UpdateLeaveRequestAsync(UpdateRequestCommand command);
+    Task<bool> IsAnyLeaveRequest(Guid guid);
 }

@@ -26,7 +26,7 @@ public class LeaveRequestRepository:ILeaveRequestRepository
         return await _context.LeaveRequests.Include(a=>a.Employee).Include(a=>a.ReplaceEmployee).ToListAsync();
     }
 
-    public async Task<bool> IsAnyLeaveRequestAsync(Guid id, DateTime fromDate, DateTime toDate)
+    public async Task<bool> IsAnyActiveLeaveRequestAsync(Guid id, DateTime fromDate, DateTime toDate)
     {
         return await _context.LeaveRequests.AnyAsync(a =>
             a.EmployeeId == id || a.ReplacementId == id &&
@@ -54,6 +54,11 @@ public class LeaveRequestRepository:ILeaveRequestRepository
     public async Task<LeaveRequest> GetLeaveRequestById(Guid guid)
     {
         return await _context.LeaveRequests.FirstOrDefaultAsync(a => a.Id == guid);
+    }
+
+    public async Task<bool> IsAnyLeaveRequest(Guid guid)
+    {
+        return await _context.LeaveRequests.AnyAsync(a => a.Id == guid);
     }
 
     public async Task SaveChangesAsync()
